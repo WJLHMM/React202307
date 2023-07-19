@@ -1,0 +1,34 @@
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  // width: 100%;
+  width: 375px;
+  height: 60px;
+  z-index: 1000;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  /* prettier-ignore */
+  border-top: 1PX solid #d5d5d5 /*no*/;
+  a {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 18px;
+    text-decoration: none;
+    span {
+      font-size: 30px;
+      line-height: 30px;
+    }
+    &.active {
+      color: blueviolet;
+      font-weight: bold;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+$blue: #1875e7;
+$green: #18e73e;
+div.logo-header {
+  background: $blue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30px;
+  svg {
+    width: 70px !important;
+    height: 70px !important;
+  }
+}
+.category {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 70px;
+  padding: 0.1rem 0.5rem;
+  background-color: $green;
+  li {
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    border-top: 1px solid lighten($blue, 20%); /*no*/
+    &.active {
+      color: rebeccapurple;
+      font-weight: bold;
+    }
+  }
+}

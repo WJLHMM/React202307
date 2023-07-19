@@ -1,0 +1,22 @@
+.nav-header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 50px;
+  z-index: 1000;
+  // width: 100%;
+  width: 375px;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1rem;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 20px;
+  span {
+    position: absolute;
+    left: 10px;
+    line-height: 50px;
+    display: inline-block;
+    height: 100%;
+  }
+}

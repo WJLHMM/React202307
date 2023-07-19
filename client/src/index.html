@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+    <script>
+      (function () {
+        function defineFontSize() {
+          //如果屏幕大小（ocument.documentElement.clientWidth）为750px，则rem=100px,如果是iphone 375 那就是50px
+          document.documentElement.style.fontSize =
+            (document.documentElement.clientWidth / 750) * 100 + "px";
+        }
+        defineFontSize();
+        console.log(
+          "defineFontSize",
+          (document.documentElement.clientWidth / 750) * 100 + "px"
+        );
+        console.log("defineFontSize", document.documentElement.style.fontSize);
+        //这里可以做个节流
+        window.addEventListener("resize", defineFontSize, false);
+      })();
+    </script>
+    <!-- <script src="../3rdPartyLib/flexible.js"></script> -->
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
