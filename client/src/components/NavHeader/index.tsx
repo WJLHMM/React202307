@@ -1,10 +1,8 @@
 import React, { PropsWithChildren } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { withRouter, RouteComponentProps } from "react-router";
 import { LeftOutlined } from "@ant-design/icons";
 import { History } from "history";
 import "./index.scss";
-
+// console.log("NavHEADER", __filename);
 // const navigate = useNavigate();
 // navigate('xxxx')
 

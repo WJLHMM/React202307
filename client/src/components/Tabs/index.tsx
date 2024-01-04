@@ -18,7 +18,7 @@ function Tabs() {
         <HomeOutlined />
         首页
       </NavLink>
-      <NavLink to="/mine">
+      <NavLink to="/cart">
         <ShoppingCartOutlined />
         购物车
       </NavLink>

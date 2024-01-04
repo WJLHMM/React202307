@@ -1,23 +1,25 @@
 const webpack = require("webpack");
+const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const tsImportPluginFactory = require("ts-import-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const isDev = process.env.NODE_ENV == "development";
 
-const path = require("path");
-// process.env.NODE_ENV == "development" ? "development" : "production";
 module.exports = {
-  //   mode: process.env.NODE_ENV == "development" ? "development" : "production",
-  mode: "development",
+  mode: isDev ? "development" : "production",
   entry: "./src/index.tsx",
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "[name].[contenthash:6].js",
+    chunkFilename: "[name].[contenthash:6].chunk.js",
   },
-  devtool: "source-map",
+  devtool: isDev ? "eval-source-map" : "cheap-module-source-map",
   devServer: {
-    // hot: true,
+    // hot: true,//webpack 5 默认hot
+    //contentBase: path.join(__dirname, "dist"),// webpack5中移动到static下了， 开发启动以dist文件夹为根目录
     static: {
-      directory: path.join(__dirname, "public"),
+      directory: path.join(__dirname, "dist"),
     },
     historyApiFallback: {
       //browserHistory模式，刷新会报404 自动重新定向到index.html
@@ -36,23 +38,23 @@ module.exports = {
       {
         test: /\.(j|t)sx?$/,
         loader: "ts-loader",
-        // options: {
-        //   transpileOnly: true,
-        //   getCustomTransformers: () => ({
-        //     before: [
-        //       tsImportPluginFactory({
-        //         libraryName: "antd", //antd  官方说明具有按需加载的工作，所以其他第三方组件需要的话可以在这里配置
-        //         libraryDirectory: "es",
-        //         // 这句必须加上，不然修改主题没有效果
-        //         // style: (name) => `${name}/style/less`,
-        //         style: true,
-        //       }),
-        //     ],
-        //   }),
-        //   compilerOptions: {
-        //     module: "es2015",
-        //   },
-        // },
+        options: {
+          transpileOnly: true,
+          getCustomTransformers: () => ({
+            before: [
+              tsImportPluginFactory({
+                libraryName: "antd", //antd  官方说明具有按需加载的工作，所以其他第三方组件需要的话可以在这里配置
+                libraryDirectory: "es", //按需加载需要es模块，commonjs不可以
+                // 这句必须加上，不然修改主题没有效果
+                // style: (name) => `${name}/style/less`,
+                style: true,
+              }),
+            ],
+          }),
+          compilerOptions: {
+            module: "es2015",
+          },
+        },
         exclude: /node_modules/,
       },
       {
@@ -173,5 +175,9 @@ module.exports = {
     }),
     // new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin(),
   ],
+  optimization: {
+    usedExports: true,
+  },
 };

@@ -21,6 +21,7 @@ export interface UserDocument extends Document {
     trim: boolean;
   };
   avatar: StringConstructor;
+  id: StringConstructor;
   confirmPassword: StringConstructor;
   getAccessToken: () => string;
   _doc: UserDocument;
@@ -33,8 +34,13 @@ const UserSChema: Schema<UserDocument> = new Schema(
       required: [true, "用户名不能为空"],
       minlength: [6, "最小长度不能小于6位"],
       maxlength: [12, "最大长度不能小于12位"],
+      pattern: /^[a-zA-Z0-9_-]{6,12}$/g,
     },
-    password: String,
+    password: {
+      type: String,
+      pattern:
+        /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/g,
+    },
     avatar: String,
     confirmPassword: String,
     email: {
@@ -49,7 +55,8 @@ const UserSChema: Schema<UserDocument> = new Schema(
     timestamps: true,
     toJSON: {
       transform(_doc, result) {
-        delete result.id;
+        result.id = result._id;
+        delete result._id;
         delete result.password;
         delete result.confirmPassword;
       },

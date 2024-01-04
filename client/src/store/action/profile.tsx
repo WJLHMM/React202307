@@ -1,12 +1,13 @@
 import * as actionTypes from "@/store/action-types";
 import { validator } from "@/api/profile";
 import { push } from "connected-react-router";
-import { RegisterPayload } from "@/typings/profile";
-import { register } from "@/api/profile";
+import { RegisterPayload, LoginPayload } from "@/typings/profile";
+import { RegisterResponseData, LoginResponseData } from "@/typings/response";
+import { register, login } from "@/api/profile";
 import { message } from "antd";
 
 export default {
-  validator() {
+  loginValidator() {
     return {
       type: actionTypes.VALIDATE,
       payload: validator(),
@@ -20,19 +21,45 @@ export default {
     };
   },
   register(value: RegisterPayload): any {
-    return (dispatch: any, getState: any) => {
-      (async function () {
-        try {
-          let result: any = await register(value);
-          if (result.data.success) {
+    return function (dispatch: any, getState: any) {
+      register<RegisterResponseData>(value)
+        .then((result) => {
+          console.log("result", result);
+          if (result && result!.success) {
             dispatch(push("/login"));
           } else {
-            message.error("注册为成功，资料填写有错误");
+            console.log("result=", result);
+            message.error(`注册为未成功，返回值为${result}`);
           }
-        } catch (e) {
-          message.error("注册为成功，资料填写有错误");
+        })
+        .catch((e) => {
+          console.log(e);
+          message.error(`注册未成功--${e.message}`); //这里接受从api register 捕捉的错误，显示错误原因
+        });
+    };
+  },
+  login(value: LoginPayload): any {
+    return function (dispatch: any, getState: any) {
+      (async function () {
+        try {
+          let result: LoginResponseData = await login<LoginResponseData>(value);
+          if (result!.success) {
+            message.info("您已登录成功");
+            sessionStorage.setItem("access_token", result.data);
+            dispatch(push("/profile"));
+          } else {
+            message.error(`登录未成功1${result}`);
+          }
+        } catch (e: any) {
+          message.error(`登录未成功: ${e!.message}`);
         }
       })();
+    };
+  },
+  changeAvatar(avatarUrl: string) {
+    return {
+      type: actionTypes.CHANGE_AVATAR,
+      payload: avatarUrl,
     };
   },
 };

@@ -11,8 +11,8 @@ export const register = async (
   res: Response,
   next: NextFunction
 ) => {
-  let { username, password, confirmPassword, email, avatar } = req.body;
   try {
+    let { username, password, confirmPassword, email, avatar } = req.body;
     let { valid, errors } = validateRegisterInput(
       username,
       password,
@@ -129,5 +129,25 @@ export const validator = async (
     }
   } else {
     next(new HttpException(StatusCodes.UNAUTHORIZED, "您未授权登录"));
+  }
+};
+
+export const avatarUpload = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let { userId } = req.body;
+    console.log("userId=", userId);
+    let avatar = `${req.protocol}://${req.headers.host}/uploads/${
+      req.file!.filename
+    }`;
+    await User.updateOne({ _id: userId }, { avatar });
+    // res.setHeader("Cross-Origin-Embedder-Policy", "cross-origin");
+    // res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    res.send({ success: true, data: avatar });
+  } catch (e) {
+    next(e);
   }
 };

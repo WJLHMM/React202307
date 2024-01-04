@@ -2,3 +2,7 @@ node_modules
 .idea
 mongodb
 temfiles
+.env
+ReadMe.md
+public/uploads
+uploads/*

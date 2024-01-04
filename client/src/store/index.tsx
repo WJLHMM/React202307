@@ -6,6 +6,7 @@ import {
   Store,
   AnyAction,
   compose,
+  Dispatch,
 } from "redux";
 import promise from "redux-promise";
 import thunk from "redux-thunk";
@@ -40,5 +41,7 @@ let store: Store<CombinedState, AnyAction> = applyMiddleware(
 //     applyMiddleware(routerMiddleware(history), promise, thunk, logger)
 //   )
 // );
+export type StoreDispatch = Dispatch;
+export type StoreGetState = () => CombinedState;
 
 export default store;

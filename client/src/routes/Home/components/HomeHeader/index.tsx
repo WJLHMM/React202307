@@ -15,6 +15,7 @@ const defaultStyle: CSSProperties = {
 interface Props {
   currentCategory: string; //当前选中的分类 此数据会放在redux仓库中
   setCurrentCategory: (currentCategory: string) => any; //改变仓库中的分类
+  refreshLessons: Function;
 }
 
 interface TransitionStyles {
@@ -45,10 +46,11 @@ function HomeHeader(props: Props) {
       //这里做个判断 以防止类型报错 TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
       // Type 'undefined' is not assignable to type 'string'.
       props.setCurrentCategory(category);
+      props.refreshLessons();
     }
-    // setIsMenuShow(false);
+    setIsMenuShow(false);
     // console.log("taget=", target, category);
-    console.log("taget=", target);
+    // console.log("taget=", target);
   };
   // console.log("Props=", props);
   return (
@@ -63,39 +65,37 @@ function HomeHeader(props: Props) {
       </div>
       <Transition in={isMenuShow} timeout={duration}>
         {(state: keyof TransitionStyles) => (
-          console.log("state=", state),
-          (
-            <ul
-              className="category"
-              onClick={setCurrentCategory}
-              style={{ ...defaultStyle, ...transitionStyles[state] }}
+          // console.log("state=", state),
+          <ul
+            className="category"
+            onClick={setCurrentCategory}
+            style={{ ...defaultStyle, ...transitionStyles[state] }}
+          >
+            <li
+              data-category="all"
+              className={classnames({
+                active: props.currentCategory === "all",
+              })}
             >
-              <li
-                data-category="all"
-                className={classnames({
-                  active: props.currentCategory === "all",
-                })}
-              >
-                所有的
-              </li>
-              <li
-                data-category="react"
-                className={classnames({
-                  active: props.currentCategory === "react",
-                })}
-              >
-                React方面的
-              </li>
-              <li
-                data-category="vue"
-                className={classnames({
-                  active: props.currentCategory === "vue",
-                })}
-              >
-                Vue方面的
-              </li>
-            </ul>
-          )
+              所有的
+            </li>
+            <li
+              data-category="react"
+              className={classnames({
+                active: props.currentCategory === "react",
+              })}
+            >
+              React方面的
+            </li>
+            <li
+              data-category="vue"
+              className={classnames({
+                active: props.currentCategory === "vue",
+              })}
+            >
+              Vue方面的
+            </li>
+          </ul>
         )}
       </Transition>
     </header>

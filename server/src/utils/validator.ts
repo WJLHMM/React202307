@@ -3,6 +3,7 @@ import { UserDocument } from "src/models/user";
 
 // export interface RegisterInput extends Partial<UserDocument> {}
 export interface RegisterInput {
+  //注册传入数据结构
   username: string;
   password: string;
   email: string;

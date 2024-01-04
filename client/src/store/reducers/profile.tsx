@@ -18,7 +18,7 @@ function ProfileReducer(
       if (action.payload && action.payload.success) {
         return {
           loginState: LOGIN_TYPES.LOGINED,
-          user: action.payload,
+          user: action.payload.data,
           error: null,
         };
       } else {
@@ -36,9 +36,15 @@ function ProfileReducer(
         error: null,
       };
       break;
+    case actionTypes.CHANGE_AVATAR:
+      return {
+        ...state,
+        user: { ...state.user, avatar: action.payload } as ProfileState["user"],
+      };
+      break;
     default:
+      return state;
   }
-  return state;
 }
 
 export default ProfileReducer;

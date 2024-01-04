@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 
 interface Result {
   status?: number;
-  sucess: boolean;
+  success: boolean;
   message: string;
   errors?: string;
 }
@@ -17,7 +17,7 @@ let errorMiddleWare = (
 ) => {
   let result: Result = {
     status: error.status,
-    sucess: false,
+    success: false,
     message: error.message,
   };
   if (error.errors && Object.keys(error.errors).length > 0) {
